@@ -1,5 +1,5 @@
 # TODOS:
-# 1. Test for game win conditions
+# 1. Update tests for game win conditions with appropriate arguments
 # 2. TBD
 
 require './lib/game'
