@@ -19,31 +19,26 @@ class Board
     board.each_with_index do |row, i|
       row_string = ''
       row_string += "#{Y_AXIS[i]}  "
-      if i.even?
-        row.each_index do |n|
-          if n.even?
-            row_string += ' '
-          else
-            row_string += '█'
-          end
-        end
-      else
-        row.each_index do |n|
-          if n.odd?
-            row_string += ' '
-          else
-            row_string += '█'
-          end
-        end
-      end
+      row_string += draw_row(row, i)
 
       puts row_string
     end
 
     x_labels = "\n   "
-    X_AXIS.each do |i|
-      x_labels += i.to_s
-    end
+    X_AXIS.each { |i| x_labels += i.to_s }
     puts x_labels
+  end
+
+  private
+
+  # Helper method used in #draw_board
+  def draw_row(row, row_number)
+    row_string = ''
+    if row_number.even?
+      row.each_index { |n| row_string += n.even? ? ' ' : '█' }
+    else
+      row.each_index { |n| row_string += n.odd? ? ' ' : '█' }
+    end
+    row_string
   end
 end
