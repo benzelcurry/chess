@@ -31,8 +31,9 @@ class Board
 
   private
 
-  # Helper method used in #draw_board
+  # Helper method used in #draw_board for drawing the rows
   def draw_row(row, row_number)
+    # TODO: Update this to check for pieces and then draw them if present
     row_string = ''
     if row_number.even?
       row.each_index { |n| row_string += n.even? ? ' ' : '█' }
