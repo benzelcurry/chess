@@ -10,20 +10,34 @@ class Piece
   end
 
   # (Attempts to) move piece to target destination
-  def move(piece, destination)
+  def move
     # Destination will be converted from letter-number format to fit 2D array (use a hash?)
-    # Pseucodode for checking if move is legal:
-    if piece can move to spot
-      if spot is empty
-        puts "[piece] to [destination]"
-      elsif piece of same color on spot
-        puts "Illegal move - Piece of same color already on spot"
-      else
-        remove opponent piece from board
-        puts "[piece] captures [destination]"
-      end
+    # Pseucodode for checking if move is legal to be overridden by subclasses:
+  #   if piece can move to spot
+  #     if spot is empty
+  #       puts "[piece] to [destination]"
+  #     elsif something in way (ONLY FOR ROOKS, BISHOPS, AND QUEENS)
+  #       puts "Illegal move - Must capture piece blocking your path"
+  #     elsif piece of same color on spot
+  #       puts "Illegal move - Piece of same color already on spot"
+  #     else
+  #       remove opponent piece from board
+  #       puts "[piece] captures [destination]"
+  #     end
+  #   else
+  #     puts "Illegal move - Piece can't move like that"
+  #   end
+    raise NotImplementedError
+  end
+
+  private
+
+  # Validates target destination input; meant to be used in subclasses
+  def valid_destination?(input)
+    if input.length == 2 && input[0].match(/[a-h]/) && input[1].match(/[1-8]/)
+      true
     else
-      puts "Illegal move - Piece can't move like that"
+      false
     end
   end
 end
