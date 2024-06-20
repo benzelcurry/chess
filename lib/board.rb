@@ -1,5 +1,4 @@
 # TODOs:
-# 1. Make board a 2D array of 8 subarrays of length 8
 # 2. Arrays will be prepopulated with the pieces
 # 3. Make sure it uses the unicode chesspieces accordingly
 # 4. Make a piece class that's extended by respective pieces?
@@ -11,7 +10,7 @@ class Board
   Y_AXIS = ('A'..'H').to_a.freeze
 
   def initialize
-    self.board = Array.new(7) { Array.new(8, '_') }
+    self.board = Array.new(8) { Array.new(8, '_') }
   end
 
   # Prints the board to the console
@@ -31,6 +30,17 @@ class Board
 
   private
 
+  COORD_MAP = {
+    A: 0,
+    B: 1,
+    C: 2,
+    D: 3,
+    E: 4,
+    F: 5,
+    G: 6,
+    H: 7
+  }
+
   # Helper method used in #draw_board for drawing the rows
   def draw_row(row, row_number)
     # TODO: Update this to check for pieces and then draw them if present
@@ -41,5 +51,27 @@ class Board
       row.each_index { |n| row_string += n.odd? ? ' ' : '█' }
     end
     row_string
+  end
+
+  # Draws a piece on the board
+  def draw_piece(piece, coordinate)
+    # TODO: Add a method for translating coordinates before implementing
+  end
+
+  # Translates coordinates to array syntax
+  def translate_coordinates(coordinate)
+    raise ArgumentException "Invalid coordinates: #{coordinate}" unless valid_coordinate?(coordinate)
+
+    [COORD_MAP[coordinate[0]], coordinate[1] - 1]
+  end
+
+  # Validates target piece/destination input
+  def valid_coordinate?(input)
+    if input.length == 2 && input[0].match(/[a-h]/) && input[1].match(/[1-8]/)
+      true
+    else
+      puts 'Destination must be in the format [a-h][1-8] (e.g. B7, D2, etc.)'
+      false
+    end
   end
 end
