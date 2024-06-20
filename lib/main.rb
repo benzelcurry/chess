@@ -10,3 +10,5 @@ black_pawn = Pawn.new('black', 'above')
 
 puts white_pawn.icon
 puts black_pawn.icon
+
+white_pawn.move

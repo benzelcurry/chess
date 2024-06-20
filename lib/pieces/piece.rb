@@ -32,11 +32,12 @@ class Piece
 
   private
 
-  # Validates target destination input; meant to be used in subclasses
-  def valid_destination?(input)
+  # Validates target piece/destination input; meant to be used in subclasses
+  def valid_coordinate?(input)
     if input.length == 2 && input[0].match(/[a-h]/) && input[1].match(/[1-8]/)
       true
     else
+      puts 'Destination must be in the format [a-h][1-8] (e.g. B7, D2, etc.)'
       false
     end
   end
