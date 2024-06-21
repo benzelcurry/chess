@@ -52,7 +52,6 @@ class Board
   def draw_row(row, row_number)
     row_string = ''
     if row_number.even?
-      # row.each_index { |n| row_string += n.even? ? ' ' : '█' }
       row.each_index do |n|
         if row[n] == '_'
           row_string += n.even? ? ' ' : '█'
@@ -61,7 +60,6 @@ class Board
         end
       end
     else
-      # row.each_index { |n| row_string += n.odd? ? ' ' : '█' }
       row.each_index do |n|
         if row[n] == '_'
           row_string += n.odd? ? ' ' : '█'
@@ -77,7 +75,7 @@ class Board
   def translate_coordinates(coordinate)
     raise ArgumentException "Invalid coordinates: #{coordinate}" unless valid_coordinate?(coordinate)
 
-    [COORD_MAP[coordinate[0]].to_i, coordinate[1].to_i - 1]
+    [COORD_MAP[coordinate[0].upcase.to_sym].to_i, coordinate[1].to_i - 1]
   end
 
   # Validates target piece/destination input
