@@ -48,24 +48,24 @@ class Board
   }
 
   # Helper method used in #draw_board for drawing the rows
-  # TODO: May need to be rewritten with additional abstractions to properly draw pieces
+  # Note: This could be more DRY but there's really no way to make this method pretty
   def draw_row(row, row_number)
     row_string = ''
     if row_number.even?
       row.each_index do |n|
-        if row[n] == '_'
-          row_string += n.even? ? ' ' : '█'
-        else
-          row_string += row[n].icon
-        end
+        row_string += if row[n] == '_'
+                        n.even? ? ' ' : '█'
+                      else
+                        row[n].icon
+                      end
       end
     else
       row.each_index do |n|
-        if row[n] == '_'
-          row_string += n.odd? ? ' ' : '█'
-        else
-          row_string += row[n].icon
-        end
+        row_string += if row[n] == '_'
+                        n.odd? ? ' ' : '█'
+                      else
+                        row[n].icon
+                      end
       end
     end
     row_string
