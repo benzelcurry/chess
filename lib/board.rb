@@ -28,6 +28,12 @@ class Board
     puts x_labels
   end
 
+  # Draws/moves a piece on the board
+  def position_piece(piece, coordinate)
+    coords = translate_coordinates(coordinate)
+    board[coords[0]][coords[1]] = piece
+  end
+
   private
 
   COORD_MAP = {
@@ -42,27 +48,36 @@ class Board
   }
 
   # Helper method used in #draw_board for drawing the rows
+  # TODO: May need to be rewritten with additional abstractions to properly draw pieces
   def draw_row(row, row_number)
-    # TODO: Update this to check for pieces and then draw them if present
     row_string = ''
     if row_number.even?
-      row.each_index { |n| row_string += n.even? ? ' ' : '█' }
+      # row.each_index { |n| row_string += n.even? ? ' ' : '█' }
+      row.each_index do |n|
+        if row[n] == '_'
+          row_string += n.even? ? ' ' : '█'
+        else
+          row_string += row[n].icon
+        end
+      end
     else
-      row.each_index { |n| row_string += n.odd? ? ' ' : '█' }
+      # row.each_index { |n| row_string += n.odd? ? ' ' : '█' }
+      row.each_index do |n|
+        if row[n] == '_'
+          row_string += n.odd? ? ' ' : '█'
+        else
+          row_string += row[n].icon
+        end
+      end
     end
     row_string
   end
 
-  # Draws a piece on the board
-  def draw_piece(piece, coordinate)
-    # TODO: Add a method for translating coordinates before implementing
-  end
-
-  # Translates coordinates to array syntax
+  # Translates coordinates to array accessor syntax
   def translate_coordinates(coordinate)
     raise ArgumentException "Invalid coordinates: #{coordinate}" unless valid_coordinate?(coordinate)
 
-    [COORD_MAP[coordinate[0]], coordinate[1] - 1]
+    [COORD_MAP[coordinate[0]].to_i, coordinate[1].to_i - 1]
   end
 
   # Validates target piece/destination input

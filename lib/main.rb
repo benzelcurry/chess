@@ -14,11 +14,19 @@ black_pawn_6 = Pawn.new('black', 'A6')
 black_pawn_7 = Pawn.new('black', 'A7')
 black_pawn_8 = Pawn.new('black', 'A8')
 
-white_pawn_1 = Pawn.new('white', 'A1')
-white_pawn_2 = Pawn.new('white', 'A2')
-white_pawn_3 = Pawn.new('white', 'A3')
-white_pawn_4 = Pawn.new('white', 'A4')
-white_pawn_5 = Pawn.new('white', 'A5')
-white_pawn_6 = Pawn.new('white', 'A6')
-white_pawn_7 = Pawn.new('white', 'A7')
-white_pawn_8 = Pawn.new('white', 'A8')
+white_pawn_1 = Pawn.new('white', 'H1')
+white_pawn_2 = Pawn.new('white', 'H2')
+white_pawn_3 = Pawn.new('white', 'H3')
+white_pawn_4 = Pawn.new('white', 'H4')
+white_pawn_5 = Pawn.new('white', 'H5')
+white_pawn_6 = Pawn.new('white', 'H6')
+white_pawn_7 = Pawn.new('white', 'H7')
+white_pawn_8 = Pawn.new('white', 'H8')
+
+board.position_piece(white_pawn_1, white_pawn_1.location.downcase)
+board.position_piece(white_pawn_2, white_pawn_2.location.downcase)
+
+# TODO: Put pieces into an array and loop through to draw them
+# TODO: Ensure that two pieces can't be on the same spot
+
+board.draw_board
