@@ -41,3 +41,6 @@ end
 # TODO: Ensure that two pieces can't be on the same spot
 
 board.draw_board
+
+board.move_piece
+board.move_piece

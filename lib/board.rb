@@ -34,6 +34,38 @@ class Board
     board[coords[0]][coords[1]] = piece
   end
 
+  # Moves the specified piece to target destination
+  # Note: Pseudocode in Piece.rb
+  # TODO: Will likely need multiple abstractions before being finished
+  def move_piece
+    # May want to determine legal moves by checking Piece type
+    target_piece = nil
+    destination = nil
+
+    puts 'Please enter which piece you would like to move'
+    loop do
+      target_piece = gets.chomp.downcase
+      break if valid_coordinate?(target_piece)
+    end
+    target_piece = translate_coordinates(target_piece)
+
+    puts 'Please enter where you\'d like to move it'
+    loop do
+      destination = gets.chomp.downcase
+      break if valid_coordinate?(destination)
+    end
+    destination = translate_coordinates(destination)
+
+    # TODO: Add a default color for board squares that stays in tact even after piece is moved
+    board[destination[0]][destination[1]] = board[target_piece[0]][target_piece[1]]
+    board[target_piece[0]][target_piece[1]] = '_'
+
+    # TODO: Add variables to capture the original coordinate inputs so this output looks cleaner
+    puts "#{target_piece} to #{destination}"
+
+    draw_board
+  end
+
   private
 
   COORD_MAP = {
