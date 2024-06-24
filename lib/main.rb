@@ -27,9 +27,6 @@ white_pieces = [
   white_pawn8 = Pawn.new('white', 'G8')
 ]
 
-# board.position_piece(white_pawn1, white_pawn1.location.downcase)
-# board.position_piece(white_pawn2, white_pawn2.location.downcase)
-
 black_pieces.each do |piece|
   board.position_piece(piece, piece.location.downcase)
 end

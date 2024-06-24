@@ -1,8 +1,4 @@
-# TODOs:
-# 2. Arrays will be prepopulated with the pieces
-# 3. Make sure it uses the unicode chesspieces accordingly
-# 4. Make a piece class that's extended by respective pieces?
-
+# Class for instantiating the board that the game will be played on
 class Board
   attr_accessor :board
 
@@ -117,6 +113,23 @@ class Board
     else
       puts 'Destination must be in the format [a-h][1-8] (e.g. B7, D2, etc.)'
       false
+    end
+  end
+
+  # Checks to see if a space is open
+  # Coordinate should be translated by #translate_coordinates
+  # Piece will be the piece being moved
+  def can_move?(piece, coordinate)
+    if board[coordinate[0]][coordinate[1]] == '_'
+      true
+    elsif board[coordinate[0]][coordinate[1]].color == piece.color
+      puts 'Cannot move to a square occupied by the same color.'
+      false
+    else
+      # Might need to refactor the coordinate to display properly (or say the piece name being taken)
+      puts "#{coordinate} captured."
+      board[coordinate[0]][coordinate[1]] = '_'
+      true
     end
   end
 end
