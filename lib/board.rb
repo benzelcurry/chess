@@ -123,12 +123,16 @@ class Board
   # Checks to see if a space is open
   # Coordinate should be translated by #translate_coordinates
   # Piece will be the piece being moved
-  # TODO: Check if its a legal move for the piece being passed as an argument
+  # TODO: FIGURE OUT THE BUG WITH THE FIRST STEP OF THIS CONDITIONAL
+  # TODO: Update how legal moves are being checked on pawn
   def can_move?(piece, coordinate)
-    if board[coordinate[0]][coordinate[1]] == '_'
+    if piece.legal_move?(coordinate)
+      puts "#{piece.name}s can't move like that. Please try again."
+      false
+    elsif board[coordinate[0]][coordinate[1]] == '_'
       true
     elsif board[coordinate[0]][coordinate[1]].color == piece.color
-      puts 'Cannot move to a square occupied by the same color.'
+      puts 'Cannot move to a square occupied by the same color. Please try again.'
       false
     else
       # Might need to refactor the coordinate to display properly (or say the piece name being taken)
