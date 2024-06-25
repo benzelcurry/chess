@@ -9,4 +9,9 @@ class Pawn < Piece
     super(color, location)
     self.icon = (color == 'white' ? '♙' : '♟')
   end
+
+  # Defines whether the passed move is a legal move for a pawn
+  def legal_move?(destination)
+    # if destination[0] ==
+  end
 end

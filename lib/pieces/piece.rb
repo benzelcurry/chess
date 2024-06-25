@@ -30,15 +30,8 @@ class Piece
     raise NotImplementedError
   end
 
-  private
-
-  # Validates target piece/destination input; meant to be used in subclasses
-  def valid_coordinate?(input)
-    if input.length == 2 && input[0].match(/[a-h]/) && input[1].match(/[1-8]/)
-      true
-    else
-      puts 'Destination must be in the format [a-h][1-8] (e.g. B7, D2, etc.)'
-      false
-    end
+  # Checks if the piece type is capable of making the given move
+  def legal_move?(destination)
+    raise NotImplementedError
   end
 end

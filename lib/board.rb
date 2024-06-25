@@ -26,8 +26,8 @@ class Board
 
   # Draws/moves a piece on the board
   def position_piece(piece, coordinate)
-    coords = translate_coordinates(coordinate)
-    board[coords[0]][coords[1]] = piece
+    # coords = translate_coordinates(coordinate)
+    board[coordinate[0]][coordinate[1]] = piece
   end
 
   # Moves the specified piece to target destination
@@ -48,11 +48,14 @@ class Board
     puts 'Please enter where you\'d like to move it'
     loop do
       destination = gets.chomp.downcase
-      break if valid_coordinate?(destination)
+      break if valid_coordinate?(destination) &&
+               # TODO: Add a check to the below method for legal moves based on target piece
+               can_move?(board[target_piece[0]][target_piece[1]], translate_coordinates(destination))
     end
     destination = translate_coordinates(destination)
 
-    # TODO: Add a default color for board squares that stays in tact even after piece is moved
+    # TODO: Update the target piece's location property to the destination
+
     board[destination[0]][destination[1]] = board[target_piece[0]][target_piece[1]]
     board[target_piece[0]][target_piece[1]] = '_'
 
@@ -77,6 +80,7 @@ class Board
 
   # Helper method used in #draw_board for drawing the rows
   # Note: This could be more DRY but there's really no way to make this method pretty
+  # TODO: Change this to use whitespace + background colors for the squares per josh's recommendation
   def draw_row(row, row_number)
     row_string = ''
     if row_number.even?
@@ -119,6 +123,7 @@ class Board
   # Checks to see if a space is open
   # Coordinate should be translated by #translate_coordinates
   # Piece will be the piece being moved
+  # TODO: Check if its a legal move for the piece being passed as an argument
   def can_move?(piece, coordinate)
     if board[coordinate[0]][coordinate[1]] == '_'
       true
