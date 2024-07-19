@@ -26,6 +26,8 @@ class Pawn < Piece
   private
 
   # TODO: Clean this up, make abstractions, then copy over to #legal_move_white?
+  # TODO: Prevent them from capturing if target is a king and provide a unique message
+  # Idea: Abstract the logic for captures (when y_dif is positive) to their own helper method
   def legal_move_black?(x_dif, y_dif, target_color)
     if y_dif.abs.positive? && target_color != 'white'
       false
