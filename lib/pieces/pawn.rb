@@ -25,8 +25,12 @@ class Pawn < Piece
 
   def legal_move_black?(movement)
     if first_turn
-      self.first_turn = false
-      movement <= 2 && movement.positive? ? true : false
+      if movement <= 2 && movement.positive?
+        self.first_turn = false
+        true
+      else
+        false
+      end
     else
       movement <= 1 && movement.positive? ? true : false
     end
@@ -34,8 +38,12 @@ class Pawn < Piece
 
   def legal_move_white?(movement)
     if first_turn
-      self.first_turn = false
-      movement.abs <= 2 && movement.negative? ? true : false
+      if movement.abs <= 2 && movement.negative?
+        self.first_turn = false
+        true
+      else
+        false
+      end
     else
       movement.abs <= 1 && movement.negative? ? true : false
     end
