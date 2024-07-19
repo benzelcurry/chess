@@ -14,11 +14,30 @@ class Pawn < Piece
   def legal_move?(destination)
     x_dif = destination[0] - location[0]
 
+    if color == 'black'
+      legal_move_black?(x_dif)
+    else
+      legal_move_white?(x_dif)
+    end
+  end
+
+  private
+
+  def legal_move_black?(movement)
     if first_turn
       self.first_turn = false
-      x_dif <= 2 && x_dif.positive? ? true : false
+      movement <= 2 && movement.positive? ? true : false
     else
-      x_dif <= 1 && x_dif.positive? ? true : false
+      movement <= 1 && movement.positive? ? true : false
+    end
+  end
+
+  def legal_move_white?(movement)
+    if first_turn
+      self.first_turn = false
+      movement.abs <= 2 && movement.negative? ? true : false
+    else
+      movement.abs <= 1 && movement.negative? ? true : false
     end
   end
 end
