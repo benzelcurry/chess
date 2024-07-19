@@ -1,6 +1,6 @@
 # Pawn; extends Piece
 class Pawn < Piece
-  attr_accessor :icon, :name
+  attr_accessor :icon, :name, :first_turn
 
   def initialize(color, location)
     super(color, location)
@@ -15,6 +15,7 @@ class Pawn < Piece
     x_dif = destination[0] - location[0]
 
     if first_turn
+      self.first_turn = false
       x_dif <= 2 && x_dif.positive? ? true : false
     else
       x_dif <= 1 && x_dif.positive? ? true : false
