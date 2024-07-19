@@ -24,7 +24,8 @@ white_pieces = [
   white_pawn5 = Pawn.new('white', [6, 4]),
   white_pawn6 = Pawn.new('white', [6, 5]),
   white_pawn7 = Pawn.new('white', [6, 6]),
-  white_pawn8 = Pawn.new('white', [6, 7])
+  white_pawn8 = Pawn.new('white', [6, 7]),
+  white_pawn_DEL_ME = Pawn.new('white', [2, 2])
 ]
 
 black_pieces.each do |piece|

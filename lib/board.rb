@@ -122,12 +122,14 @@ class Board
 
   # Checks to see if a space is open and a legal move
   def can_move?(piece, coordinate)
-    if !piece.legal_move?(coordinate)
+    target = board[coordinate[0]][coordinate[1]]
+
+    if !piece.legal_move?(coordinate, target)
       puts "#{piece.name}s can't move like that. Please try again."
       false
-    elsif board[coordinate[0]][coordinate[1]] == '_'
+    elsif target == '_'
       true
-    elsif board[coordinate[0]][coordinate[1]].color == piece.color
+    elsif target.color == piece.color
       puts 'Cannot move to a square occupied by the same color. Please try again.'
       false
     else
