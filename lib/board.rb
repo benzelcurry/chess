@@ -136,6 +136,7 @@ class Board
       # Might need to refactor the coordinate to display properly (or say the piece name being taken)
       puts "#{coordinate} captured."
       board[coordinate[0]][coordinate[1]] = '_'
+      piece.location = [coordinate[0], coordinate[1]]
       true
     end
   end

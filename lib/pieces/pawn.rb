@@ -26,7 +26,7 @@ class Pawn < Piece
 
   private
 
-  # TODO: Prevent them from hopping two on first turn if something is in their way
+  # TODO: Prevent them from hopping two on first turn if something is in their way (send this logic from Board using roadblock variable; will be used for other pieces)
   # Idea: Abstract the logic for captures (when y_dif is positive) to their own helper method
   def legal_move_black?(x_dif, y_dif, target_color, is_king)
     if y_dif.abs.positive? && target_color != 'white'
@@ -36,19 +36,26 @@ class Pawn < Piece
       false
     elsif first_turn
       first_move_black(x_dif, y_dif, target_color)
-    elsif x_dif <= 1 && x_dif.positive?
-      subsequent_move_black(y_dif, target_color)
+    else
+      p [x_dif, y_dif, target_color]
+      subsequent_move(x_dif, y_dif, target_color, 'black')
     end
   end
 
   def legal_move_white?(x_dif, y_dif, target_color, is_king)
-    if first_turn
-      if x_dif.abs <= 2 && x_dif.negative?
-        self.first_turn = false
-        true
-      else
-        false
-      end
+    if y_dif.abs.positive? && target_color != 'black'
+      false
+    elsif is_king
+      puts 'A pawn cannot take a king'
+      false
+    elsif first_turn
+      # if x_dif.abs <= 2 && x_dif.negative?
+      #   self.first_turn = false
+      #   true
+      # else
+      #   false
+      # end
+      first_move_white(x_dif, y_dif, target_color, self_color)
     else
       x_dif.abs <= 1 && x_dif.negative? ? true : false
     end
@@ -63,15 +70,32 @@ class Pawn < Piece
         false
       end
     else
-      x_dif == 1 && x_dif.positive? && y_dif.abs == 1 ? true : false
+      x_dif == 1 && y_dif.abs == 1 ? true : false
     end
   end
 
-  def subsequent_move_black(y_dif, target_color)
-    if !y_dif.zero?
-      true
+  def first_move_white(x_dif, y_dif, target_color)
+    if target_color.nil?
+      if x_dif <= 2 && x_dif.negative? && target_color.nil?
+        self.first_turn = false
+        true
+      else
+        false
+      end
     else
-      y_dif.abs == 1 && target_color == 'white' ? true : false
+      x_dif == -1 && y_dif.abs == 1 ? true : false
+    end
+  end
+
+  def subsequent_move(x_dif, y_dif, target_color, self_color)
+    if y_dif.zero? && x_dif.abs == 1
+      if self_color == 'black'
+        x_dif.positive? ? true : false
+      else
+        x_dif.negative? ? true : false
+      end
+    else
+      y_dif.abs == 1 && target_color != self_color ? true : false
     end
   end
 end
