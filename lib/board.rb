@@ -54,8 +54,6 @@ class Board
     end
     destination = translate_coordinates(destination)
 
-    # TODO: Update the target piece's location property to the destination
-
     board[destination[0]][destination[1]] = board[target_piece[0]][target_piece[1]]
     board[target_piece[0]][target_piece[1]] = '_'
 
@@ -121,6 +119,8 @@ class Board
   end
 
   # Checks to see if a space is open and a legal move
+  # TODO: Update to send first item in piece's path as an argument
+  # TODO: Update to translate coordinates and provide piece names
   def can_move?(piece, coordinate)
     target = board[coordinate[0]][coordinate[1]]
 
@@ -128,15 +128,19 @@ class Board
       puts "#{piece.name}s can't move like that. Please try again."
       false
     elsif target == '_'
+      piece.location = coordinate
       true
     elsif target.color == piece.color
       puts 'Cannot move to a square occupied by the same color. Please try again.'
       false
     else
-      # Might need to refactor the coordinate to display properly (or say the piece name being taken)
+      target_piece = board[coordinate[0]][coordinate[1]]
+      target_piece.location = nil
+      piece.location = coordinate
+      
+      # NOTE: Could be a bug here with the previous piece not being deleted correctly; look out in future
       puts "#{coordinate} captured."
       board[coordinate[0]][coordinate[1]] = '_'
-      piece.location = [coordinate[0], coordinate[1]]
       true
     end
   end
