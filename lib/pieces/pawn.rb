@@ -26,8 +26,7 @@ class Pawn < Piece
 
   private
 
-  # TODO: Clean this up, make abstractions, then copy over to #legal_move_white?
-  # TODO: Prevent them from capturing if target is a king and provide a unique message
+  # TODO: Prevent them from hopping two on first turn if something is in their way
   # Idea: Abstract the logic for captures (when y_dif is positive) to their own helper method
   def legal_move_black?(x_dif, y_dif, target_color, is_king)
     if y_dif.abs.positive? && target_color != 'white'
@@ -36,23 +35,9 @@ class Pawn < Piece
       puts 'A pawn cannot take a king'
       false
     elsif first_turn
-      if target_color.nil?
-        if x_dif <= 2 && x_dif.positive? && target_color.nil?
-          self.first_turn = false
-          true
-        else
-          false
-        end
-      elsif target
-      else
-        x_dif == 1 && x_dif.positive? && y_dif.abs == 1 ? true : false
-      end
+      first_move_black(x_dif, y_dif, target_color)
     elsif x_dif <= 1 && x_dif.positive?
-      if !y_dif.zero?
-        true
-      else
-        y_dif.abs == 1 && target_color == 'white' ? true : false
-      end
+      subsequent_move_black(y_dif, target_color)
     end
   end
 
@@ -66,6 +51,27 @@ class Pawn < Piece
       end
     else
       x_dif.abs <= 1 && x_dif.negative? ? true : false
+    end
+  end
+
+  def first_move_black(x_dif, y_dif, target_color)
+    if target_color.nil?
+      if x_dif <= 2 && x_dif.positive? && target_color.nil?
+        self.first_turn = false
+        true
+      else
+        false
+      end
+    else
+      x_dif == 1 && x_dif.positive? && y_dif.abs == 1 ? true : false
+    end
+  end
+
+  def subsequent_move_black(y_dif, target_color)
+    if !y_dif.zero?
+      true
+    else
+      y_dif.abs == 1 && target_color == 'white' ? true : false
     end
   end
 end
