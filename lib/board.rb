@@ -57,8 +57,7 @@ class Board
     board[destination[0]][destination[1]] = board[target_piece[0]][target_piece[1]]
     board[target_piece[0]][target_piece[1]] = '_'
 
-    # TODO: Add variables to capture the original coordinate inputs so this output looks cleaner
-    puts "#{target_piece} to #{destination}"
+    puts "#{reverse_coordinates(target_piece)} to #{reverse_coordinates(destination)}."
 
     draw_board
   end
@@ -108,6 +107,11 @@ class Board
     [COORD_MAP[coordinate[0].upcase.to_sym].to_i, coordinate[1].to_i - 1]
   end
 
+  # Reverts coordinates back into human readible syntax
+  def reverse_coordinates(coordinate)
+    "#{COORD_MAP.key(coordinate[0])}#{coordinate[1]}"
+  end
+
   # Validates target piece/destination input
   def valid_coordinate?(input)
     if input.length == 2 && input[0].match(/[a-h]/) && input[1].match(/[1-8]/)
@@ -139,7 +143,8 @@ class Board
       piece.location = coordinate
 
       # NOTE: Could be a bug here with the previous piece not being deleted correctly; look out in future
-      puts "#{coordinate} captured."
+      # puts "#{coordinate} captured."
+      puts "#{reverse_coordinates(coordinate)} captured."
       board[coordinate[0]][coordinate[1]] = '_'
       true
     end
