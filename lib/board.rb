@@ -124,7 +124,6 @@ class Board
 
   # Checks to see if a space is open and a legal move
   # TODO: Update to send first item in piece's path as an argument
-  # TODO: Update to translate coordinates and provide piece names
   def can_move?(piece, coordinate)
     target = board[coordinate[0]][coordinate[1]]
 
@@ -148,5 +147,20 @@ class Board
       board[coordinate[0]][coordinate[1]] = '_'
       true
     end
+  end
+
+  # Checks for the first piece in a path for pieces that move vertically (rook, queen, pawn)
+  def check_path_vertical(moving_piece, destination)
+    # TODO: Write method that looks at the y-val of each row; return nil if nothing in path, otherwise return coordinate and/or piece
+  end
+
+  # Checks for the first piece in a path for pieces that move horizontally (rook, queen)
+  def check_path_horizontal(moving_piece, destination)
+    # TODO: Write method that looks at the x-val of each column; return nil if nothing in path, otherwise return coordinate and/or piece
+  end
+
+  # Checks for the first piece in a path for pieces that move diagonally (bishop, queen)
+  def check_path_diagonal(moving_piece, destination)
+    # TODO: Write method that looks at both the x-val and y-val of each square in path; return nil if nothing in path, otherwise return coordinate and/or piece
   end
 end

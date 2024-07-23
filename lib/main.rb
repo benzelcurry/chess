@@ -3,7 +3,6 @@ require_relative('pieces/piece')
 require_relative('pieces/pawn')
 
 board = Board.new
-board.draw_board
 
 black_pieces = [
   black_pawn1 = Pawn.new('black', [1, 0]),
