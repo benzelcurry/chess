@@ -20,7 +20,7 @@ class Board
     end
 
     x_labels = "\n   "
-    X_AXIS.each { |i| x_labels += i.to_s }
+    X_AXIS.each { |i| x_labels += "#{i.to_s} " }
     puts x_labels
   end
 
@@ -83,17 +83,17 @@ class Board
     if row_number.even?
       row.each_index do |n|
         row_string += if row[n] == '_'
-                        n.even? ? ' ' : '█'
+                        n.even? ? '  ' : '██'
                       else
-                        row[n].icon
+                        "#{row[n].icon} "
                       end
       end
     else
       row.each_index do |n|
         row_string += if row[n] == '_'
-                        n.odd? ? ' ' : '█'
+                        n.odd? ? '  ' : '██'
                       else
-                        row[n].icon
+                        "#{row[n].icon} "
                       end
       end
     end
