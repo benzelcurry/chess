@@ -37,7 +37,6 @@ class Pawn < Piece
     elsif first_turn
       first_move_black(x_dif, y_dif, target_color)
     else
-      p [x_dif, y_dif, target_color]
       subsequent_move(x_dif, y_dif, target_color, 'black')
     end
   end
@@ -49,15 +48,9 @@ class Pawn < Piece
       puts 'A pawn cannot take a king'
       false
     elsif first_turn
-      # if x_dif.abs <= 2 && x_dif.negative?
-      #   self.first_turn = false
-      #   true
-      # else
-      #   false
-      # end
-      first_move_white(x_dif, y_dif, target_color, self_color)
+      first_move_white(x_dif, y_dif, target_color)
     else
-      x_dif.abs <= 1 && x_dif.negative? ? true : false
+      subsequent_move(x_dif, y_dif, target_color, 'white')
     end
   end
 

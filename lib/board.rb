@@ -137,7 +137,7 @@ class Board
       target_piece = board[coordinate[0]][coordinate[1]]
       target_piece.location = nil
       piece.location = coordinate
-      
+
       # NOTE: Could be a bug here with the previous piece not being deleted correctly; look out in future
       puts "#{coordinate} captured."
       board[coordinate[0]][coordinate[1]] = '_'
