@@ -126,8 +126,13 @@ class Board
   # TODO: Update to send first item in piece's path as an argument
   def can_move?(piece, coordinate)
     target = board[coordinate[0]][coordinate[1]]
+    vertical_blocker = check_path_vertical(piece, coordinate)
 
-    if !piece.legal_move?(coordinate, target)
+    # Modify below line to check for all blockers
+    if vertical_blocker
+      puts "There's a piece in your way. Please enter another coordinate."
+      false
+    elsif !piece.legal_move?(coordinate, target)
       puts "#{piece.name}s can't move like that. Please try again."
       false
     elsif target == '_'
@@ -137,8 +142,9 @@ class Board
       puts 'Cannot move to a square occupied by the same color. Please try again.'
       false
     else
-      target_piece = board[coordinate[0]][coordinate[1]]
-      target_piece.location = nil
+      # target_piece = board[coordinate[0]][coordinate[1]]
+      # target_piece.location = nil
+      target.location = nil
       piece.location = coordinate
 
       # NOTE: Could be a bug here with the previous piece not being deleted correctly; look out in future
@@ -151,12 +157,13 @@ class Board
 
   # Checks for the first piece in a path for pieces that move vertically (rook, queen, pawn)
   def check_path_vertical(moving_piece, destination)
-    # TODO: Write method that looks at the y-val of each row; return nil if nothing in path, otherwise return coordinate and/or piece
     moving_piece_x = moving_piece.location[0]
     moving_piece_y = moving_piece.location[1]
     first_blocker = nil
 
-    while moving_piece_x != destination[0]
+    return first_blocker if moving_piece_y != destination[1]
+
+    while moving_piece_x < destination[0] - 1
       if board[moving_piece_x][moving_piece_y] != '_'
         first_blocker = board[moving_piece_x][moving_piece_y]
         break
