@@ -109,7 +109,7 @@ class Board
 
   # Reverts coordinates back into human readible syntax
   def reverse_coordinates(coordinate)
-    "#{COORD_MAP.key(coordinate[0])}#{coordinate[1]}"
+    "#{COORD_MAP.key(coordinate[0])}#{coordinate[1] + 1}"
   end
 
   # Validates target piece/destination input
@@ -123,7 +123,6 @@ class Board
   end
 
   # Checks to see if a space is open and a legal move
-  # TODO: Update to send first item in piece's path as an argument
   def can_move?(piece, coordinate)
     target = board[coordinate[0]][coordinate[1]]
     vertical_blocker = check_path_vertical(piece, coordinate)
@@ -142,13 +141,10 @@ class Board
       puts 'Cannot move to a square occupied by the same color. Please try again.'
       false
     else
-      # target_piece = board[coordinate[0]][coordinate[1]]
-      # target_piece.location = nil
       target.location = nil
       piece.location = coordinate
 
       # NOTE: Could be a bug here with the previous piece not being deleted correctly; look out in future
-      # puts "#{coordinate} captured."
       puts "#{reverse_coordinates(coordinate)} captured."
       board[coordinate[0]][coordinate[1]] = '_'
       true

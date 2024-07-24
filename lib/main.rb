@@ -1,6 +1,7 @@
 require_relative('board')
 require_relative('pieces/piece')
 require_relative('pieces/pawn')
+require_relative('pieces/rook')
 
 board = Board.new
 
@@ -12,7 +13,8 @@ black_pieces = [
   black_pawn5 = Pawn.new('black', [1, 4]),
   black_pawn6 = Pawn.new('black', [1, 5]),
   black_pawn7 = Pawn.new('black', [1, 6]),
-  black_pawn8 = Pawn.new('black', [1, 7])
+  black_pawn8 = Pawn.new('black', [1, 7]),
+  black_rook = Rook.new('black', [2, 7])
 ]
 
 white_pieces = [
@@ -24,7 +26,8 @@ white_pieces = [
   white_pawn6 = Pawn.new('white', [6, 5]),
   white_pawn7 = Pawn.new('white', [6, 6]),
   white_pawn8 = Pawn.new('white', [6, 7]),
-  white_pawn_DEL_ME = Pawn.new('white', [2, 2])
+  white_pawn_DEL_ME = Pawn.new('white', [2, 2]),
+  white_rook1 = Rook.new('white', [5, 7])
 ]
 
 black_pieces.each do |piece|
