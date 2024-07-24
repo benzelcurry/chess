@@ -152,6 +152,18 @@ class Board
   # Checks for the first piece in a path for pieces that move vertically (rook, queen, pawn)
   def check_path_vertical(moving_piece, destination)
     # TODO: Write method that looks at the y-val of each row; return nil if nothing in path, otherwise return coordinate and/or piece
+    moving_piece_x = moving_piece.location[0]
+    moving_piece_y = moving_piece.location[1]
+    first_blocker = nil
+
+    while moving_piece_x != destination[0]
+      if board[moving_piece_x][moving_piece_y] != '_'
+        first_blocker = board[moving_piece_x][moving_piece_y]
+        break
+      end
+    end
+
+    first_blocker
   end
 
   # Checks for the first piece in a path for pieces that move horizontally (rook, queen)
