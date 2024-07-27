@@ -2,16 +2,21 @@
 class Board
   attr_accessor :board
 
+  # If X_AXIS and Y_AXIS are mainly for bounds then we can leave them as ranges instead of converting them to arrays
   X_AXIS = (1..8).to_a.freeze
   Y_AXIS = ('A'..'H').to_a.freeze
 
   def initialize
+    #### A 2D array is more efficient than using a hash, but the array is tiny so it doesn't matter
+    #### A hash of points/vectors or a class wrapping a 2d array would be much nicer to manipulate
     self.board = Array.new(8) { Array.new(8, '_') }
   end
 
+  # Drawing the board becomes simpler if we maintain a 2D array instead of adding logic
   # Prints the board to the console
   def draw_board
     board.each_with_index do |row, i|
+      # We can do puts "#{Y_AXIS[i]}  #{draw_row(row, i)}"
       row_string = ''
       row_string += "#{Y_AXIS[i]}  "
       row_string += draw_row(row, i)
@@ -24,6 +29,10 @@ class Board
     puts x_labels
   end
 
+
+  ### In general we can simplify handling positions if we use a vector class
+  ### https://ruby-doc.org/stdlib-3.0.0/libdoc/matrix/rdoc/Vector.html
+
   # Draws/moves a piece on the board
   def position_piece(piece, coordinate)
     # coords = translate_coordinates(coordinate)
@@ -35,10 +44,14 @@ class Board
   # TODO: Will likely need multiple abstractions before being finished
   def move_piece
     # May want to determine legal moves by checking Piece type
-    target_piece = nil
+    target_piece = nil # null assignments are a code smell
     destination = nil
 
     puts 'Please enter which piece you would like to move'
+    ### Avoid loop do and do while in other languages
+    ### In ruby we can express this as
+    # target_piece = gets.chomp.downcase until valid_coordinate? target_piece
+    #
     loop do
       target_piece = gets.chomp.downcase
       break if valid_coordinate?(target_piece)
@@ -64,6 +77,11 @@ class Board
 
   private
 
+  # We can do
+  # COORD_MAP = ('A' .. 'H').each_with_index
+  #               .to_h
+  #               .freeze
+  #
   COORD_MAP = {
     A: 0,
     B: 1,
@@ -78,7 +96,29 @@ class Board
   # Helper method used in #draw_board for drawing the rows
   # Note: This could be more DRY but there's really no way to make this method pretty
   # TODO: Change this to use whitespace + background colors for the squares per josh's recommendation
-  def draw_row(row, row_number)
+  def draw_row(row, row_number) # Would something like column_index or height be more appropriate? kinda confusing
+    ##
+    # This can be simplified with some more advanced functional programming concepts
+    #
+    # pattern = ['  ', '██'].cycle.lazy
+    # pattern = pattern.drop(1) if row_number.odd?
+    #
+    # row.zip(pattern)
+    #    .map { |icon, tile| icon == '_' ? tile : icon }
+
+    ##
+    # Another Version
+    #
+    # row.each_with_index.map do |icon, idx|
+    #   if icon != '_'
+    #     icon
+    #   else if idx.even? == rown_number.even?
+    #     '  '
+    #   else
+    #     '██'
+    #  end
+    # end
+    #
     row_string = ''
     if row_number.even?
       row.each_index do |n|
@@ -104,8 +144,12 @@ class Board
   def translate_coordinates(coordinate)
     raise ArgumentException "Invalid coordinates: #{coordinate}" unless valid_coordinate?(coordinate)
 
+    # the first .to_i is redundent
     [COORD_MAP[coordinate[0].upcase.to_sym].to_i, coordinate[1].to_i - 1]
   end
+
+  # We can simplify this by keeping an inversion of the map since it is small
+  # Ruby's hash also has a convient invert method
 
   # Reverts coordinates back into human readible syntax
   def reverse_coordinates(coordinate)
@@ -114,6 +158,17 @@ class Board
 
   # Validates target piece/destination input
   def valid_coordinate?(input)
+    ##
+    # Would be nicer to throw here instead of at the call sight imo
+    #
+    # letter, num = input
+    # unless input.length == 2 && /[a-h]/i =~ letter && /[1-8]/ =~ num
+    #   puts 'Destination must be in the format [a-h][1-8] (e.g. B7, D2, etc.)'
+    #   raise ArgumentException "Invalid coordinates: #{coordinate}" unless valid_coordinate?(coordinate)
+    # end
+    #
+    # true
+    #
     if input.length == 2 && input[0].match(/[a-h]/) && input[1].match(/[1-8]/)
       true
     else

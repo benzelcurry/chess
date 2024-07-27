@@ -4,6 +4,7 @@ class Pawn < Piece
 
   def initialize(color, location)
     super(color, location)
+    # color feels like it should be an enum, or in Ruby's case a symbol
     self.icon = (color == 'white' ? '♙' : '♟')
     self.name = 'Pawn'
     self.first_turn = true
@@ -15,6 +16,8 @@ class Pawn < Piece
     x_dif = destination[0] - location[0]
     y_dif = destination[1] - location[1]
     target_color = target == '_' ? nil : target.color
+    # The king cant be captured in chess
+    # A player is obligated to get out of check and loses if there is no way out
     is_king = target == '_' ? false : (target.name == 'King')
 
     if color == 'black'
