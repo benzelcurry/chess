@@ -41,7 +41,7 @@ class Board
     puts 'Please enter which piece you would like to move'
     loop do
       target_piece = gets.chomp.downcase
-      break if valid_coordinate?(target_piece)
+      break if valid_coordinate?(target_piece, true)
     end
     target_piece = translate_coordinates(target_piece)
 
@@ -102,7 +102,8 @@ class Board
 
   # Translates coordinates to array accessor syntax
   def translate_coordinates(coordinate)
-    raise ArgumentException "Invalid coordinates: #{coordinate}" unless valid_coordinate?(coordinate)
+    # Bottom line of code can maybe be deleted; I believe input should already be validated by the time it makes it to this method
+    # raise ArgumentException "Invalid coordinates: #{coordinate}" unless valid_coordinate?(coordinate)
 
     [COORD_MAP[coordinate[0].upcase.to_sym].to_i, coordinate[1].to_i - 1]
   end
@@ -113,9 +114,15 @@ class Board
   end
 
   # Validates target piece/destination input
-  def valid_coordinate?(input)
+  def valid_coordinate?(input, first_target=false)
     if input.length == 2 && input[0].match(/[a-h]/) && input[1].match(/[1-8]/)
-      true
+      coords = translate_coordinates(input)
+      if first_target && board[coords[0]][coords[1]] == '_'
+        puts 'You must select a square that contains a piece'
+        false
+      else
+        true
+      end
     else
       puts 'Destination must be in the format [a-h][1-8] (e.g. B7, D2, etc.)'
       false
