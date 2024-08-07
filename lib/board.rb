@@ -57,8 +57,10 @@ class Board
     board[destination[0]][destination[1]] = board[target_piece[0]][target_piece[1]]
     board[target_piece[0]][target_piece[1]] = '_'
 
+    sleep(1)
     puts "#{reverse_coordinates(target_piece)} to #{reverse_coordinates(destination)}."
 
+    sleep(1)
     draw_board
   end
 
