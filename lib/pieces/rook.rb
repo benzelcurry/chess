@@ -1,6 +1,6 @@
 # Rook; extends Piece
 class Rook < Piece
-  attr_accessor :icon, :name, :first_turn
+  attr_accessor :icon, :name
 
   def initialize(color, location)
     super(color, location)
