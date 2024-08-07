@@ -9,7 +9,7 @@ class Rook < Piece
   end
 
   # Defines whether the passed move is a legal move for a rook
-  def legal_move?(destination, target)
+  def legal_move?(destination, _target)
     x_dif = destination[0] - location[0]
     y_dif = destination[1] - location[1]
 
