@@ -134,10 +134,17 @@ class Board
   # Checks to see if a space is open and a legal move
   def can_move?(piece, coordinate)
     target = board[coordinate[0]][coordinate[1]]
-    vertical_blocker = check_path_vertical(piece, coordinate)
+    # vertical_blocker = check_path_vertical(piece, coordinate)
+
+    vertical_blocker = piece.location[1] == coordinate[1] && check_path_vertical(piece, coordinate)
+    horizontal_blocker = piece.location[0] == coordinate[0] && check_path_horizontal(piece, coordinate)
+    diagonal_blocker = vertical_blocker == false && horizontal_blocker == false &&
+                    check_path_diagonal(piece, coordinate) &&
+                    piece.name != 'Knight'
 
     # Modify below line to check for all blockers
-    if vertical_blocker
+    # TODO: Check for horizontal_blocker as well
+    if vertical_blocker || diagonal_blocker
       puts "There's a piece in your way. Please enter another coordinate."
       false
     elsif !piece.legal_move?(coordinate, target)
@@ -185,6 +192,8 @@ class Board
   # Checks for the first piece in a path for pieces that move horizontally (rook, queen)
   def check_path_horizontal(moving_piece, destination)
     # TODO: Write method that looks at the x-val of each column; return nil if nothing in path, otherwise return coordinate and/or piece
+    # TODO: Remove the false; is a placeholder for diagonal_blocker in #can_move?
+    false
   end
 
   # Checks for the first piece in a path for pieces that move diagonally (bishop, queen)
@@ -193,7 +202,7 @@ class Board
     y = moving_piece.location[1]
     first_blocker = nil
 
-    while [moving_piece_x, moving_piece_y] != destination
+    while [x, y] != destination
       if board[x][y] != '_' && x != moving_piece.location[0] && y != moving_piece.location[1]
         first_blocker = board[x][y]
         break
