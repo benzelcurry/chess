@@ -189,13 +189,20 @@ class Board
 
   # Checks for the first piece in a path for pieces that move diagonally (bishop, queen)
   def check_path_diagonal(moving_piece, destination)
-    # TODO: Write method that looks at both the x-val and y-val of each square in path; return nil if nothing in path, otherwise return coordinate and/or piece
-    moving_piece_x = moving_piece.location[0]
-    moving_piece_y = moving_piece.location[1]
+    x = moving_piece.location[0]
+    y = moving_piece.location[1]
     first_blocker = nil
 
     while [moving_piece_x, moving_piece_y] != destination
-      
+      if board[x][y] != '_' && x != moving_piece.location[0] && y != moving_piece.location[1]
+        first_blocker = board[x][y]
+        break
+      end
+
+      x < destination[0] ? x += 1 : x -= 1
+      y < destination[1] ? y += 1 : y -= 1
     end
+
+    first_blocker
   end
 end
