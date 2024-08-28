@@ -143,6 +143,7 @@ class Board
                     piece.name != 'Knight'
 
     # Modify below line to check for all blockers
+    # TODO: Check if piece can move before checking for blockers? Might complicate things with pawns
     # TODO: Check for horizontal_blocker as well
     if vertical_blocker || diagonal_blocker
       puts "There's a piece in your way. Please enter another coordinate."
@@ -191,9 +192,28 @@ class Board
 
   # Checks for the first piece in a path for pieces that move horizontally (rook, queen)
   def check_path_horizontal(moving_piece, destination)
+    moving_piece_x = moving_piece.location[0]
+    moving_piece_y = moving_piece.location[1]
+    first_blocker = nil
+
+    return first_blocker if moving_piece_x != destination[0]
+
+    while moving_piece_y != destination[1]
+      if board[moving_piece_x][moving_piece_y] != '_' && moving_piece_y != moving_piece.location[1]
+        first_blocker = board[moving_piece_x][moving_piece_y]
+        break
+      elsif moving_piece_y < destination[1]
+        moving_piece_y += 1
+      else
+        moving_piece_y -= 1
+      end
+    end
+
+    first_blocker
+
     # TODO: Write method that looks at the x-val of each column; return nil if nothing in path, otherwise return coordinate and/or piece
     # TODO: Remove the false; is a placeholder for diagonal_blocker in #can_move?
-    false
+    # false
   end
 
   # Checks for the first piece in a path for pieces that move diagonally (bishop, queen)
