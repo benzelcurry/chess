@@ -139,17 +139,16 @@ class Board
     vertical_blocker = piece.location[1] == coordinate[1] && check_path_vertical(piece, coordinate)
     horizontal_blocker = piece.location[0] == coordinate[0] && check_path_horizontal(piece, coordinate)
     diagonal_blocker = vertical_blocker == false && horizontal_blocker == false &&
-                    check_path_diagonal(piece, coordinate) &&
-                    piece.name != 'Knight'
+                                           check_path_diagonal(piece, coordinate) &&
+                                           piece.name != 'Knight'
 
     # Modify below line to check for all blockers
     # TODO: Check if piece can move before checking for blockers? Might complicate things with pawns
-    # TODO: Check for horizontal_blocker as well
-    if vertical_blocker || diagonal_blocker
-      puts "There's a piece in your way. Please enter another coordinate."
-      false
-    elsif !piece.legal_move?(coordinate, target)
+    if !piece.legal_move?(coordinate, target)
       puts "#{piece.name}s can't move like that. Please try again."
+      false
+    elsif vertical_blocker || horizontal_blocker || diagonal_blocker
+      puts "There's a piece in your way. Please enter another coordinate."
       false
     elsif target == '_'
       piece.location = coordinate
