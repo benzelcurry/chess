@@ -14,6 +14,8 @@ class Knight < Piece
     y_dif = (destination[1] - location[1]).abs
     split = (x_dif - y_dif).abs
 
+    p [x_dif, y_dif, split]
+
     split == 1
   end
 end
