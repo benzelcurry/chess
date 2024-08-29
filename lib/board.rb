@@ -1,12 +1,13 @@
 # Class for instantiating the board that the game will be played on
 class Board
-  attr_accessor :board
+  attr_accessor :board, :turn
 
   X_AXIS = (1..8).to_a.freeze
   Y_AXIS = ('A'..'H').to_a.freeze
 
   def initialize
     self.board = Array.new(8) { Array.new(8, '_') }
+    self.turn = 0
   end
 
   # Prints the board to the console
@@ -31,10 +32,7 @@ class Board
   end
 
   # Moves the specified piece to target destination
-  # Note: Pseudocode in Piece.rb
-  # TODO: Will likely need multiple abstractions before being finished
   def move_piece
-    # May want to determine legal moves by checking Piece type
     target_piece = nil
     destination = nil
 
@@ -49,10 +47,10 @@ class Board
     loop do
       destination = gets.chomp.downcase
       break if valid_coordinate?(destination) &&
-               # TODO: Add a check to the below method for legal moves based on target piece
                can_move?(board[target_piece[0]][target_piece[1]], translate_coordinates(destination))
     end
     destination = translate_coordinates(destination)
+    self.turn = turn.zero? ? 1 : 0
 
     board[destination[0]][destination[1]] = board[target_piece[0]][target_piece[1]]
     board[target_piece[0]][target_piece[1]] = '_'
@@ -104,7 +102,6 @@ class Board
 
   # Translates coordinates to array accessor syntax
   def translate_coordinates(coordinate)
-    # Bottom line of code can maybe be deleted; I believe input should already be validated by the time it makes it to this method
     # raise ArgumentException "Invalid coordinates: #{coordinate}" unless valid_coordinate?(coordinate)
 
     [COORD_MAP[coordinate[0].upcase.to_sym].to_i, coordinate[1].to_i - 1]
@@ -121,6 +118,12 @@ class Board
       coords = translate_coordinates(input)
       if first_target && board[coords[0]][coords[1]] == '_'
         puts 'You must select a square that contains a piece'
+        false
+      elsif first_target && board[coords[0]][coords[1]].color == 'black' && turn.zero?
+        puts "It's white's turn. Please select a white piece."
+        false
+      elsif first_target && board[coords[0]][coords[1]].color == 'white' && turn == 1
+        puts "It's black's turn. Please select a black piece."
         false
       else
         true
