@@ -137,8 +137,7 @@ class Board
   # Checks to see if a space is open and a legal move
   def can_move?(piece, coordinate)
     target = board[coordinate[0]][coordinate[1]]
-    # vertical_blocker = check_path_vertical(piece, coordinate)
-    
+
     vertical_blocker = piece.location[1] == coordinate[1] && check_path_vertical(piece, coordinate)
     horizontal_blocker = piece.location[0] == coordinate[0] && check_path_horizontal(piece, coordinate)
     diagonal_blocker = vertical_blocker == false && horizontal_blocker == false &&
