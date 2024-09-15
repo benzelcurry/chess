@@ -1,13 +1,12 @@
 # Class for instantiating the board that the game will be played on
 class Board
-  attr_accessor :board, :turn
+  attr_accessor :board
 
   X_AXIS = (1..8).to_a.freeze
   Y_AXIS = ('A'..'H').to_a.freeze
 
   def initialize
     self.board = Array.new(8) { Array.new(8, '_') }
-    self.turn = 0
   end
 
   # Prints the board to the console
@@ -32,34 +31,78 @@ class Board
   end
 
   # Moves the specified piece to target destination
-  def move_piece
-    target_piece = nil
-    destination = nil
-
-    puts 'Please enter which piece you would like to move'
-    loop do
-      target_piece = gets.chomp.downcase
-      break if valid_coordinate?(target_piece, true)
-    end
-    target_piece = translate_coordinates(target_piece)
-
-    puts 'Please enter where you\'d like to move it'
-    loop do
-      destination = gets.chomp.downcase
-      break if valid_coordinate?(destination) &&
-               can_move?(board[target_piece[0]][target_piece[1]], translate_coordinates(destination))
-    end
-    destination = translate_coordinates(destination)
-    self.turn = turn.zero? ? 1 : 0
-
-    board[destination[0]][destination[1]] = board[target_piece[0]][target_piece[1]]
-    board[target_piece[0]][target_piece[1]] = '_'
+  def move_piece(piece, destination)
+    board[destination[0]][destination[1]] = board[piece[0]][piece[1]]
+    board[piece[0]][piece[1]] = '_'
 
     sleep(1)
-    puts "#{reverse_coordinates(target_piece)} to #{reverse_coordinates(destination)}."
+    puts "#{reverse_coordinates(piece)} to #{reverse_coordinates(destination)}."
 
     sleep(1)
     draw_board
+  end
+
+  # Validates target piece/destination input
+  def valid_coordinate?(input, turn, first_target=false)
+    return if input == 'cancel'
+
+    if input.length == 2 && input[0].match(/[a-h]/) && input[1].match(/[1-8]/)
+      coords = translate_coordinates(input)
+      if first_target && board[coords[0]][coords[1]] == '_'
+        puts 'You must select a square that contains a piece'
+        false
+      elsif first_target && board[coords[0]][coords[1]].color == 'black' && turn.zero?
+        puts "It's white's turn. Please select a white piece."
+        false
+      elsif first_target && board[coords[0]][coords[1]].color == 'white' && turn == 1
+        puts "It's black's turn. Please select a black piece."
+        false
+      else
+        true
+      end
+    else
+      puts 'Destination must be in the format [a-h][1-8] (e.g. B7, D2, etc.)'
+      false
+    end
+  end
+
+  # Translates coordinates to array accessor syntax
+  def translate_coordinates(coordinate)
+    # raise ArgumentException "Invalid coordinates: #{coordinate}" unless valid_coordinate?(coordinate)
+
+    [COORD_MAP[coordinate[0].upcase.to_sym].to_i, coordinate[1].to_i - 1]
+  end
+
+  # Checks to see if a space is open and a legal move
+  def can_move?(piece, coordinate)
+    target = board[coordinate[0]][coordinate[1]]
+
+    vertical_blocker = piece.location[1] == coordinate[1] && check_path_vertical(piece, coordinate)
+    horizontal_blocker = piece.location[0] == coordinate[0] && check_path_horizontal(piece, coordinate)
+    diagonal_blocker = vertical_blocker == false && horizontal_blocker == false &&
+                                            check_path_diagonal(piece, coordinate)
+
+    if !piece.legal_move?(coordinate, target)
+      puts "#{piece.name}s can't move like that. Please try again."
+      false
+    elsif vertical_blocker || horizontal_blocker || diagonal_blocker
+      puts "There's a piece in your way. Please enter another coordinate."
+      false
+    elsif target == '_'
+      piece.location = coordinate
+      true
+    elsif target.color == piece.color
+      puts 'Cannot move to a square occupied by the same color. Please try again.'
+      false
+    else
+      target.location = nil
+      piece.location = coordinate
+
+      # NOTE: Could be a bug here with the previous piece not being deleted correctly; look out in future
+      puts "#{reverse_coordinates(coordinate)} captured."
+      board[coordinate[0]][coordinate[1]] = '_'
+      true
+    end
   end
 
   private
@@ -100,70 +143,9 @@ class Board
     row_string
   end
 
-  # Translates coordinates to array accessor syntax
-  def translate_coordinates(coordinate)
-    # raise ArgumentException "Invalid coordinates: #{coordinate}" unless valid_coordinate?(coordinate)
-
-    [COORD_MAP[coordinate[0].upcase.to_sym].to_i, coordinate[1].to_i - 1]
-  end
-
   # Reverts coordinates back into human readible syntax
   def reverse_coordinates(coordinate)
     "#{COORD_MAP.key(coordinate[0])}#{coordinate[1] + 1}"
-  end
-
-  # Validates target piece/destination input
-  def valid_coordinate?(input, first_target=false)
-    if input.length == 2 && input[0].match(/[a-h]/) && input[1].match(/[1-8]/)
-      coords = translate_coordinates(input)
-      if first_target && board[coords[0]][coords[1]] == '_'
-        puts 'You must select a square that contains a piece'
-        false
-      elsif first_target && board[coords[0]][coords[1]].color == 'black' && turn.zero?
-        puts "It's white's turn. Please select a white piece."
-        false
-      elsif first_target && board[coords[0]][coords[1]].color == 'white' && turn == 1
-        puts "It's black's turn. Please select a black piece."
-        false
-      else
-        true
-      end
-    else
-      puts 'Destination must be in the format [a-h][1-8] (e.g. B7, D2, etc.)'
-      false
-    end
-  end
-
-  # Checks to see if a space is open and a legal move
-  def can_move?(piece, coordinate)
-    target = board[coordinate[0]][coordinate[1]]
-
-    vertical_blocker = piece.location[1] == coordinate[1] && check_path_vertical(piece, coordinate)
-    horizontal_blocker = piece.location[0] == coordinate[0] && check_path_horizontal(piece, coordinate)
-    diagonal_blocker = vertical_blocker == false && horizontal_blocker == false &&
-                                           check_path_diagonal(piece, coordinate)
-
-    if !piece.legal_move?(coordinate, target)
-      puts "#{piece.name}s can't move like that. Please try again."
-      false
-    elsif vertical_blocker || horizontal_blocker || diagonal_blocker
-      puts "There's a piece in your way. Please enter another coordinate."
-      false
-    elsif target == '_'
-      piece.location = coordinate
-      true
-    elsif target.color == piece.color
-      puts 'Cannot move to a square occupied by the same color. Please try again.'
-      false
-    else
-      target.location = nil
-      piece.location = coordinate
-
-      # NOTE: Could be a bug here with the previous piece not being deleted correctly; look out in future
-      puts "#{reverse_coordinates(coordinate)} captured."
-      board[coordinate[0]][coordinate[1]] = '_'
-      true
-    end
   end
 
   # Checks for the first piece in a path for pieces that move vertically (rook, queen, pawn)
