@@ -1,11 +1,8 @@
 require_relative('board')
 require_relative('pieces/piece')
-require_relative('pieces/pawn')
-require_relative('pieces/rook')
-require_relative('pieces/bishop')
-require_relative('pieces/knight')
-require_relative('pieces/queen')
-require_relative('pieces/king')
+Dir[File.join(__dir__, 'pieces', '*.rb')].sort.each do |file|
+  require_relative file unless file.end_with?('piece.rb')
+end
 
 # Class for running the chess game
 class Game
