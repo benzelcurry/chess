@@ -68,8 +68,22 @@ class King < Piece
       return true if (blocker&.name == 'bishop' || blocker&.name == 'queen') && blocker&.color == opposite_color
     end
 
-    # TODO: Checkk all diagonal_blockers for pawns, bishops, and queens of opposing colors
-    # NOTE: Pawns can only capture depending on which direction they're in
+    pawn_blockers = [
+      [x + 1, y + 1],
+      [x - 1, y + 1],
+      [x + 1, y - 1],
+      [x - 1, y - 1]
+    ]
+
+    if color == 'white'
+      pawn_blockers[0..1].each do |blocker|
+        return true if blocker&.name == 'pawn' && blocker&.color == 'black'
+      end
+    else
+      pawn_blockers[2..3].each do |blocker|
+        return true if blocker&.name == 'pawn' && blocker&.color == 'white'
+      end
+    end
   end
 
   # TODO: Add a method that calls #in_check? for every possible move the king can make and then
