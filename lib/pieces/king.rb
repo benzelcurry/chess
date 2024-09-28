@@ -19,7 +19,7 @@ class King < Piece
   end
 
   # Checks to see if king is currently in check
-  def in_check?
+  def in_check?(board)
     x = location[0]
     y = location[1]
 
@@ -34,7 +34,9 @@ class King < Piece
       [x - 1, y - 2]
     ]
 
-    # TODO: Check all knight_spots for knights of opposing color; if present, announce check
+    knight_spots.each do |spot|
+      return true if board[spot[0]][spot[1]]&.name == 'knight'
+    end
 
     horizontal_blockers = [
       board.check_path_horizontal(self, [0, y]),
