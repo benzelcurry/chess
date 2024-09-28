@@ -1,4 +1,4 @@
-require_relative('board')
+require_relative('../board')
 
 # King; extends Piece
 class King < Piece
@@ -75,13 +75,13 @@ class King < Piece
       [x - 1, y - 1]
     ]
 
-    if color == 'white'
+    if color == 'black'
       pawn_blockers[0..1].each do |blocker|
-        return true if blocker&.name == 'pawn' && blocker&.color == 'black'
+        return true if blocker&.name == 'pawn' && blocker&.color == opposite_color
       end
     else
       pawn_blockers[2..3].each do |blocker|
-        return true if blocker&.name == 'pawn' && blocker&.color == 'white'
+        return true if blocker&.name == 'pawn' && blocker&.color == opposite_color
       end
     end
   end

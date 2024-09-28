@@ -33,6 +33,8 @@ class Game
     pawns = (0..7).map { |i| Pawn.new(color, [pawn_row, i]) }
 
     (pieces + pawns).each { |piece| board.position_piece(piece, piece.location) }
+
+    board.position_piece(Queen.new('white', [2, 0]), [2, 0])
   end
 
   # Game loop
