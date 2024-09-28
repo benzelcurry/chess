@@ -38,19 +38,16 @@ class King < Piece
       return true if board[spot[0]][spot[1]]&.name == 'knight'
     end
 
-    horizontal_blockers = [
+    straight_blockers = [
       board.check_path_horizontal(self, [0, y]),
-      board.check_path_horizontal(self, [7, y])
-    ]
-
-    # TODO: Check all horizontal_blockers for rooks and queens of opposing colors
-
-    vertical_blockers = [
+      board.check_path_horizontal(self, [7, y]),
       board.check_path_vertical(self, [x, 0]),
       board.check_path_vertical(self, [x, 7])
     ]
 
-    # TODO: Check all horizontal_blockers for rooks and queens of opposing colors
+    straight_blockers.each do |blocker|
+      return true if blocker&.name == 'rook' || blocker&.name == 'queen'
+    end
 
     diagonal_blockers = [
       # TODO: Will need to do some math to calculate what the diagonal options relating to piece are
