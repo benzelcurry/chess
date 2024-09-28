@@ -105,49 +105,6 @@ class Board
     end
   end
 
-  private
-
-  COORD_MAP = {
-    A: 0,
-    B: 1,
-    C: 2,
-    D: 3,
-    E: 4,
-    F: 5,
-    G: 6,
-    H: 7
-  }
-
-  # Helper method used in #draw_board for drawing the rows
-  # Note: This could be more DRY but there's really no way to make this method pretty
-  # TODO: Change this to use whitespace + background colors for the squares per josh's recommendation
-  def draw_row(row, row_number)
-    row_string = ''
-    if row_number.even?
-      row.each_index do |n|
-        row_string += if row[n] == '_'
-                        n.even? ? '  ' : '██'
-                      else
-                        "#{row[n].icon} "
-                      end
-      end
-    else
-      row.each_index do |n|
-        row_string += if row[n] == '_'
-                        n.odd? ? '  ' : '██'
-                      else
-                        "#{row[n].icon} "
-                      end
-      end
-    end
-    row_string
-  end
-
-  # Reverts coordinates back into human readible syntax
-  def reverse_coordinates(coordinate)
-    "#{COORD_MAP.key(coordinate[0])}#{coordinate[1] + 1}"
-  end
-
   # Checks for the first piece in a path for pieces that move vertically (rook, queen, pawn)
   def check_path_vertical(moving_piece, destination)
     moving_piece_x = moving_piece.location[0]
@@ -211,5 +168,48 @@ class Board
     end
 
     first_blocker
+  end
+
+  private
+
+  COORD_MAP = {
+    A: 0,
+    B: 1,
+    C: 2,
+    D: 3,
+    E: 4,
+    F: 5,
+    G: 6,
+    H: 7
+  }
+
+  # Helper method used in #draw_board for drawing the rows
+  # Note: This could be more DRY but there's really no way to make this method pretty
+  # TODO: Change this to use whitespace + background colors for the squares per josh's recommendation
+  def draw_row(row, row_number)
+    row_string = ''
+    if row_number.even?
+      row.each_index do |n|
+        row_string += if row[n] == '_'
+                        n.even? ? '  ' : '██'
+                      else
+                        "#{row[n].icon} "
+                      end
+      end
+    else
+      row.each_index do |n|
+        row_string += if row[n] == '_'
+                        n.odd? ? '  ' : '██'
+                      else
+                        "#{row[n].icon} "
+                      end
+      end
+    end
+    row_string
+  end
+
+  # Reverts coordinates back into human readible syntax
+  def reverse_coordinates(coordinate)
+    "#{COORD_MAP.key(coordinate[0])}#{coordinate[1] + 1}"
   end
 end

@@ -35,6 +35,7 @@ class Game
     (pieces + pawns).each { |piece| board.position_piece(piece, piece.location) }
 
     board.position_piece(Queen.new('white', [2, 0]), [2, 0])
+    # board.position_piece(King.new('black', [5, 4]), [5, 4])
 
     if color == 'white'
       self.white_king = pieces.find { |piece| piece.is_a?(King) }
@@ -50,12 +51,17 @@ class Game
     while true
       piece = choose_piece
       destination = choose_destination(board.translate_coordinates(piece))
+      kings = [black_king, white_king]
+      colors = %w[Black White]
 
       next if destination == 'cancel'
 
       board.move_piece(board.translate_coordinates(piece), board.translate_coordinates(destination))
 
+      puts "#{colors[turn]} is in check" if kings[turn].in_check?(board)
+
       self.turn = turn.zero? ? 1 : 0
+      self.turns_taken += 1
       board.draw_board
     end
   end
