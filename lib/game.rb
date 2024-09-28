@@ -6,7 +6,7 @@ end
 
 # Class for running the chess game
 class Game
-  attr_accessor :turn, :turns_taken, :board
+  attr_accessor :turn, :turns_taken, :board, :white_king, :black_king
 
   def initialize
     self.turn = 0
@@ -35,6 +35,12 @@ class Game
     (pieces + pawns).each { |piece| board.position_piece(piece, piece.location) }
 
     board.position_piece(Queen.new('white', [2, 0]), [2, 0])
+
+    if color == 'white'
+      self.white_king = pieces.find { |piece| piece.is_a?(King) }
+    else
+      self.black_king = pieces.find { |piece| piece.is_a?(King) }
+    end
   end
 
   # Game loop
