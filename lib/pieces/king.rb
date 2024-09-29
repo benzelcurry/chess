@@ -57,9 +57,12 @@ class King < Piece
     ]
 
     straight_blockers.each do |blocker|
-      if (blocker.is_a?(Rook) || blocker.is_a?(Queen)) && blocker&.color == opposite_color
-        return true
-      end
+      next unless (blocker.is_a?(Rook) || blocker.is_a?(Queen) || blocker.is_a?(King)) && blocker&.color == opposite_color
+
+      x_dif = (location[0] - blocker.location[0]).abs
+      y_dif = (location[1] - blocker.location[1]).abs
+
+      return true if [x_dif, y_dif].none? { |val| val == 1 }
     end
 
     diagonal_bounds = {
@@ -77,9 +80,12 @@ class King < Piece
     ]
 
     diagonal_blockers.each do |blocker|
-      if (blocker.is_a?(Bishop) || blocker.is_a?(Queen)) && blocker&.color == opposite_color
-        return true
-      end
+      next unless (blocker.is_a?(Bishop) || blocker.is_a?(Queen) || blocker.is_a?(King)) && blocker&.color == opposite_color
+
+      x_dif = (location[0] - blocker.location[0]).abs
+      y_dif = (location[1] - blocker.location[1]).abs
+
+      return true if [x_dif, y_dif].none? { |val| val == 1 }
     end
 
     pawn_blockers = [
@@ -102,11 +108,6 @@ class King < Piece
     false
   end
 
-  # TODO: Add a method that calls #in_check? for every possible move the king can make and then
-  #       stores them in a new variable for the piece. Then modify #legal_move? to exclude
-  #       moves that would fall in this list. End the game if the king is in checkmate. Write
-  #       messages that announce when a king is in check.
-
   def checkmate?(board)
     checked_spots = []
 
@@ -114,7 +115,7 @@ class King < Piece
       checked_spots.push(in_check?(board, spot[0], spot[1]))
     end
 
-    in_check?(board) && check_spots.all? { |item| item == true }
+    in_check?(board) && checked_spots.all? { |item| item == true }
   end
 
   def find_legal_moves(board)

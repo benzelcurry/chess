@@ -34,8 +34,6 @@ class Game
 
     (pieces + pawns).each { |piece| board.position_piece(piece, piece.location) }
 
-    board.position_piece(Queen.new('white', [2, 0]), [2, 0])
-
     if color == 'white'
       self.white_king = pieces.find { |piece| piece.is_a?(King) }
     else
@@ -59,7 +57,11 @@ class Game
 
       kings[turn.zero? ? 1 : 0].find_legal_moves(board)
 
-      puts "#{colors[turn]} is in check" if kings[turn].in_check?(board)
+      if kings[turn].checkmate?(board)
+        puts "Checkmate! #{colors[turn.zero? ? 1 : 0]} wins."
+      elsif kings[turn].in_check?(board)
+        puts "#{colors[turn]} is in check"
+      end
 
       self.turn = turn.zero? ? 1 : 0
       self.turns_taken += 1
