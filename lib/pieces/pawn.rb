@@ -10,7 +10,6 @@ class Pawn < Piece
   end
 
   # Defines whether the passed move is a legal move for a pawn
-  # TODO: Fix this and read how pawns should be allowed to move (will be different based on color)
   def legal_move?(destination, target)
     x_dif = destination[0] - location[0]
     y_dif = destination[1] - location[1]
@@ -26,7 +25,6 @@ class Pawn < Piece
 
   private
 
-  # TODO: Prevent them from hopping two on first turn if something is in their way (send this logic from Board using roadblock variable; will be used for other pieces)
   # Idea: Abstract the logic for captures (when y_dif is positive) to their own helper method
   def legal_move_black?(x_dif, y_dif, target_color, is_king)
     if y_dif.abs.positive? && target_color != 'white'
