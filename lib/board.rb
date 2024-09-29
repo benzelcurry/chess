@@ -70,7 +70,7 @@ class Board
   def translate_coordinates(coordinate)
     # raise ArgumentException "Invalid coordinates: #{coordinate}" unless valid_coordinate?(coordinate)
 
-    [COORD_MAP[coordinate[0].upcase.to_sym].to_i, coordinate[1].to_i - 1]
+    [COORD_MAP[coordinate[0].upcase].to_i, coordinate[1].to_i - 1]
   end
 
   # Checks to see if a space is open and a legal move
@@ -172,16 +172,7 @@ class Board
 
   private
 
-  COORD_MAP = {
-    A: 0,
-    B: 1,
-    C: 2,
-    D: 3,
-    E: 4,
-    F: 5,
-    G: 6,
-    H: 7
-  }
+  COORD_MAP = ('A'..'H').each_with_index.to_h.freeze
 
   # Helper method used in #draw_board for drawing the rows
   # Note: This could be more DRY but there's really no way to make this method pretty
