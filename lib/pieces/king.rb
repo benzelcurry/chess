@@ -2,12 +2,13 @@ require_relative('../board')
 
 # King; extends Piece
 class King < Piece
-  attr_accessor :icon, :name
+  attr_accessor :icon, :name, :available_spots
 
   def initialize(color, location)
     super(color, location)
     self.icon = color == 'white' ? '♔' : '♚'
     self.name = 'King'
+    self.available_spots = []
   end
 
   # Defines whether the passed move is a legal move for a king
@@ -20,9 +21,15 @@ class King < Piece
 
   # Checks to see if king is currently in check
   # TODO: Abstract much of the logic; this method is foul as-is
-  def in_check?(board)
+  def in_check?(board, target_x=nil, target_y=nil)
     x = location[0]
     y = location[1]
+
+    if target_x && target_y
+      x = target_x
+      y = target_y
+    end
+
     opposite_color = color == 'white' ? 'black' : 'white'
 
     knight_spots = [
@@ -102,12 +109,37 @@ class King < Piece
   #       stores them in a new variable for the piece. Then modify #legal_move? to exclude
   #       moves that would fall in this list. End the game if the king is in checkmate. Write
   #       messages that announce when a king is in check.
-  
+
+  def find_legal_moves(board)
+    x = location[0]
+    y = location[1]
+
+    potential_moves = [
+      safe_access(board, x - 1, y + 1),
+      safe_access(board, x, y + 1),
+      safe_access(board, x + 1, y + 1),
+      safe_access(board, x + 1, y),
+      safe_access(board, x + 1, y - 1),
+      safe_access(board, x, y - 1),
+      safe_access(board, x - 1, y - 1),
+      safe_access(board, x - 1, y)
+    ]
+
+    # Open spots are returned from #safe_access in the form of an array
+    open_spots = potential_moves.select { |item| item.is_a?(Array) }
+
+    self.available_spots = open_spots
+  end
+
   private
 
   def safe_access(board, x, y)
     return nil if x.negative? || x > 7 || y.negative? || y > 7
 
-    board.board[x][y]
+    if board.board[x][y] == '_'
+      [x, y]
+    else
+      board.board[x][y]
+    end
   end
 end
