@@ -6,7 +6,7 @@ class King < Piece
 
   def initialize(color, location)
     super(color, location)
-    self.icon = color == 'white' ? '♔' : '♚'
+    self.icon = '♚'
     self.name = 'King'
     self.available_spots = []
   end

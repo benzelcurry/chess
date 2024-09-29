@@ -4,7 +4,7 @@ class Pawn < Piece
 
   def initialize(color, location)
     super(color, location)
-    self.icon = (color == 'white' ? '♙' : '♟')
+    self.icon = '♟'
     self.name = 'Pawn'
     self.first_turn = true
   end

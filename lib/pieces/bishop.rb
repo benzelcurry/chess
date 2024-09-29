@@ -4,7 +4,7 @@ class Bishop < Piece
 
   def initialize(color, location)
     super(color, location)
-    self.icon = (color == 'white' ? '♗' : '♝')
+    self.icon = '♝'
     self.name = 'Bishop'
   end
 
