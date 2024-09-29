@@ -67,7 +67,7 @@ class Pawn < Piece
 
   def first_move_white(x_dif, y_dif, target_color)
     if target_color.nil?
-      if x_dif <= 2 && x_dif.negative? && target_color.nil?
+      if x_dif.abs <= 2 && x_dif.negative? && target_color.nil?
         self.first_turn = false
         true
       else
