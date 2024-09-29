@@ -11,17 +11,23 @@ class Board
 
   # Prints the board to the console
   def draw_board
+    top_labels = '   '
+    X_AXIS.each { |i| top_labels += "#{i} " }
+    puts top_labels
+    puts "\n"
+
     board.each_with_index do |row, i|
       row_string = ''
       row_string += "#{Y_AXIS[i]}  "
       row_string += draw_row(row, i)
+      row_string += "  #{Y_AXIS[i]}"
 
       puts row_string
     end
 
-    x_labels = "\n   "
-    X_AXIS.each { |i| x_labels += "#{i.to_s} " }
-    puts x_labels
+    bottom_labels = "\n   "
+    X_AXIS.each { |i| bottom_labels += "#{i} " }
+    puts bottom_labels
   end
 
   # Draws/moves a piece on the board
@@ -176,7 +182,6 @@ class Board
 
   # Helper method used in #draw_board for drawing the rows
   # Note: This could be more DRY but there's really no way to make this method pretty
-  # TODO: Change this to use whitespace + background colors for the squares per josh's recommendation
   def draw_row(row, row_number)
     grey_rgb = '70;130;180'
     black_rgb = '0;0;0'
