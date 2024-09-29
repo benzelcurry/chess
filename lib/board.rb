@@ -178,25 +178,43 @@ class Board
   # Note: This could be more DRY but there's really no way to make this method pretty
   # TODO: Change this to use whitespace + background colors for the squares per josh's recommendation
   def draw_row(row, row_number)
+    grey_rgb = '70;130;180'
+    black_rgb = '0;0;0'
+    white_rgb = '255;255;255'
+    mahog_rgb = '128;0;0'
     row_string = ''
+
     if row_number.even?
       row.each_index do |n|
         row_string += if row[n] == '_'
-                        n.even? ? '  ' : '██'
+                        n.even? ? colorize('  ', mahog_rgb) : colorize('  ', grey_rgb)
                       else
-                        "#{row[n].icon} "
+                        icon = "#{row[n].icon} "
+                        icon_color = row[n].color == 'white' ? white_rgb : black_rgb
+                        n.even? ? colorize(icon, mahog_rgb, icon_color) : colorize(icon, grey_rgb, icon_color)
                       end
       end
     else
       row.each_index do |n|
         row_string += if row[n] == '_'
-                        n.odd? ? '  ' : '██'
+                        n.odd? ? colorize('  ', mahog_rgb) : colorize('  ', grey_rgb)
                       else
-                        "#{row[n].icon} "
+                        icon = "#{row[n].icon} "
+                        icon_color = row[n].color == 'white' ? white_rgb : black_rgb
+                        n.odd? ? colorize(icon, mahog_rgb, icon_color) : colorize(icon, grey_rgb, icon_color)
                       end
       end
     end
     row_string
+  end
+
+  # Helper function for colorizing output in #draw_board
+  def colorize(str, color, color_two = nil)
+    if color_two
+      "\e[48;2;#{color}m\e[38;2;#{color_two}m#{str}\e[0m"
+    else
+      "\e[48;2;#{color}m#{str}\e[0m"
+    end
   end
 
   # Reverts coordinates back into human readible syntax
