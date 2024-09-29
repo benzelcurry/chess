@@ -45,7 +45,6 @@ class King < Piece
 
     knight_spots.each do |spot|
       if spot.is_a?(Knight) && spot.color == opposite_color
-        p 'The blocker is: ' + String(spot) + String(spot.location)
         return true
       end
     end
@@ -59,7 +58,6 @@ class King < Piece
 
     straight_blockers.each do |blocker|
       if (blocker.is_a?(Rook) || blocker.is_a?(Queen)) && blocker&.color == opposite_color
-        p 'The blocker is: ' + String(blocker) + String(blocker.location)
         return true
       end
     end
@@ -80,7 +78,6 @@ class King < Piece
 
     diagonal_blockers.each do |blocker|
       if (blocker.is_a?(Bishop) || blocker.is_a?(Queen)) && blocker&.color == opposite_color
-        p 'The blocker is: ' + String(blocker) + String(blocker.location)
         return true
       end
     end
@@ -109,6 +106,16 @@ class King < Piece
   #       stores them in a new variable for the piece. Then modify #legal_move? to exclude
   #       moves that would fall in this list. End the game if the king is in checkmate. Write
   #       messages that announce when a king is in check.
+
+  def checkmate?(board)
+    checked_spots = []
+
+    available_spots.each do |spot|
+      checked_spots.push(in_check?(board, spot[0], spot[1]))
+    end
+
+    in_check?(board) && check_spots.all? { |item| item == true }
+  end
 
   def find_legal_moves(board)
     x = location[0]
