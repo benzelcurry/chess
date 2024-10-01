@@ -85,8 +85,7 @@ class Board
 
     vertical_blocker = piece.location[1] == coordinate[1] && check_path_vertical(piece, coordinate)
     horizontal_blocker = piece.location[0] == coordinate[0] && check_path_horizontal(piece, coordinate)
-    diagonal_blocker = vertical_blocker == false && horizontal_blocker == false &&
-                                            check_path_diagonal(piece, coordinate)
+    diagonal_blocker = !vertical_blocker && !horizontal_blocker && check_path_diagonal(piece, coordinate)
 
     if !piece.legal_move?(coordinate, target)
       puts "#{piece.name}s can't move like that. Please try again."
@@ -161,7 +160,11 @@ class Board
 
     x = moving_piece.location[0]
     y = moving_piece.location[1]
+    x_dif = x - destination[0].abs
+    y_dif = y - destination[1].abs
     first_blocker = nil
+
+    return false if x_dif.zero? || y_dif.zero? || x_dif / y_dif != 1
 
     while [x, y] != destination
       if board[x][y] != '_' && x != moving_piece.location[0] && y != moving_piece.location[1]
