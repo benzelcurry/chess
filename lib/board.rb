@@ -27,6 +27,7 @@ class Board
 
     bottom_labels = "\n   "
     X_AXIS.each { |i| bottom_labels += "#{i} " }
+    bottom_labels += "\n\n"
     puts bottom_labels
   end
 
