@@ -59,6 +59,7 @@ class Game
 
       if kings[turn].checkmate?(board)
         puts "Checkmate! #{colors[turn.zero? ? 1 : 0]} wins."
+        exit
       elsif kings[turn].in_check?(board)
         puts "#{colors[turn]} is in check"
       end
