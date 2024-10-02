@@ -48,4 +48,4 @@ Once the game starts, players can take turns entering their moves in standard ch
 
 ## Known Issues
 
-* In Windows Terminals, all pawns render as a grey color depending on the font face being used in the terminal
+* In Windows Terminals, all pawns render as a grey color depending on the font face being used
