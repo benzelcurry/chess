@@ -46,3 +46,6 @@ To start a new game, run the following command:
 
 Once the game starts, players can take turns entering their moves in standard chess notation (e.g. b3, e4, etc.)
 
+## Known Issues
+
+* In Windows Terminals, all pawns render as a grey color depending on the font face being used in the terminal
